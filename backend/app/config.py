@@ -9,17 +9,5 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     ALGORITHM: str = "HS256"
 
-    def model_post_init(self, __context: object) -> None:
-        # Railway injects postgresql:// but SQLAlchemy async needs postgresql+asyncpg://
-        if self.DATABASE_URL.startswith("postgresql://"):
-            url = self.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
-            # Strip any existing sslmode param and add asyncpg-style ssl=prefer
-            if "sslmode=" in url:
-                import re
-                url = re.sub(r"[?&]sslmode=[^&]*", "", url)
-            sep = "&" if "?" in url else "?"
-            url = f"{url}{sep}ssl=prefer"
-            object.__setattr__(self, "DATABASE_URL", url)
-
 
 settings = Settings()
