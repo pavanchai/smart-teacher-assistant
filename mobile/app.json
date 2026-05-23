@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Smart Teacher Assistant",
+    "slug": "smart-teacher-assistant",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "smartteacher",
+    "userInterfaceStyle": "light",
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#4F46E5"
+      },
+      "package": "com.smartteacher.attendance",
+      "permissions": [
+        "RECORD_AUDIO",
+        "CAMERA",
+        "INTERNET"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.smartteacher.attendance",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Allow Smart Teacher to use your microphone for voice attendance",
+        "NSSpeechRecognitionUsageDescription": "Allow Smart Teacher to recognize speech for attendance",
+        "NSCameraUsageDescription": "Allow Smart Teacher to use your camera for attendance detection"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Allow Smart Teacher to use your microphone for voice attendance"
+        }
+      ],
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "Allow Smart Teacher to use your camera for attendance detection"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# macOS
+.DS_Store
+*.pem
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# typescript
+*.tsbuildinfo
