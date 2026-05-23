@@ -35,7 +35,11 @@ def do_run_migrations(connection):
 
 
 async def run_migrations_online() -> None:
-    connect_args = {"ssl": False} if "railway.internal" in settings.DATABASE_URL else {}
+    import ssl as _ssl
+    connect_args = (
+        {"ssl": False} if "railway.internal" in settings.DATABASE_URL
+        else {"ssl": _ssl.create_default_context()}
+    )
     connectable = create_async_engine(settings.DATABASE_URL, future=True, connect_args=connect_args)
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)

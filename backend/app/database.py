@@ -3,8 +3,11 @@ from sqlalchemy.orm import DeclarativeBase
 
 from app.config import settings
 
-# ssl=False for Railway internal network — postgres.railway.internal doesn't need SSL
-_connect_args = {"ssl": False} if "railway.internal" in settings.DATABASE_URL else {}
+import ssl as _ssl
+_connect_args = (
+    {"ssl": False} if "railway.internal" in settings.DATABASE_URL
+    else {"ssl": _ssl.create_default_context()}
+)
 engine = create_async_engine(settings.DATABASE_URL, echo=False, future=True, connect_args=_connect_args)
 
 AsyncSessionLocal = async_sessionmaker(
