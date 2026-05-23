@@ -11,11 +11,8 @@ class Settings(BaseSettings):
 
     def model_post_init(self, __context: object) -> None:
         # Railway injects postgresql:// but SQLAlchemy async needs postgresql+asyncpg://
-        # Railway Postgres also requires SSL
         if self.DATABASE_URL.startswith("postgresql://"):
             url = self.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
-            if "ssl=" not in url and "sslmode=" not in url:
-                url += "?ssl=require"
             object.__setattr__(self, "DATABASE_URL", url)
 
 
