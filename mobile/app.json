@@ -2,14 +2,14 @@
   "expo": {
     "name": "Smart Teacher Assistant",
     "slug": "smart-teacher-assistant",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "scheme": "smartteacher",
     "userInterfaceStyle": "light",
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#4F46E5"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.smartteacher.attendance",
       "permissions": [
