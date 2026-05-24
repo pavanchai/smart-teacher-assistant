@@ -20,6 +20,10 @@ def get_sync_url() -> str:
     url = settings.DATABASE_URL
     url = url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
     url = url.replace("postgresql://", "postgresql+psycopg2://")
+    # Internal Railway network — no SSL needed
+    if "railway.internal" in url and "sslmode" not in url:
+        sep = "&" if "?" in url else "?"
+        url = f"{url}{sep}sslmode=disable"
     return url
 
 
