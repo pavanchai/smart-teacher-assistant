@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
 
     def model_post_init(self, __context: object) -> None:
-        # Railway injects postgresql:// — convert to asyncpg dialect
+        # Railway injects plain postgresql:// — convert to asyncpg dialect
         if self.DATABASE_URL.startswith("postgresql://"):
             object.__setattr__(
                 self,

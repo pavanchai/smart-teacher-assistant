@@ -34,16 +34,20 @@ def do_run_migrations(connection):
         context.run_migrations()
 
 
+def _connect_args(url: str) -> dict:
+    if "localhost" in url or "127.0.0.1" in url:
+        return {}
+    if "railway.internal" in url:
+        return {"ssl": False}
+    return {"ssl": "require"}  # Railway public proxy
+
+
 async def run_migrations_online() -> None:
-    import ssl as _ssl
-    if "railway.internal" in settings.DATABASE_URL:
-        connect_args = {"ssl": False}
-    else:
-        ctx = _ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = _ssl.CERT_NONE
-        connect_args = {"ssl": ctx}
-    connectable = create_async_engine(settings.DATABASE_URL, future=True, connect_args=connect_args)
+    connectable = create_async_engine(
+        settings.DATABASE_URL,
+        future=True,
+        connect_args=_connect_args(settings.DATABASE_URL),
+    )
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
     await connectable.dispose()
