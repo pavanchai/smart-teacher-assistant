@@ -17,7 +17,8 @@ import app.models  # noqa: F401
 
 
 async def seed() -> None:
-    engine = create_async_engine(settings.DATABASE_URL, echo=False)
+    from app.database import _build_connect_args
+    engine = create_async_engine(settings.DATABASE_URL, echo=False, connect_args=_build_connect_args())
     session_factory = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
     async with session_factory() as db:
