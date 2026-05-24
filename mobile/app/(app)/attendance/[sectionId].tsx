@@ -244,8 +244,12 @@ export default function AttendanceScreen() {
   const [sessionInitialized, setSessionInitialized] = useState(false);
   const [cameraEnabled, setCameraEnabled]           = useState(false);
 
+  const [cameraFacing, setCameraFacing] = useState<'back' | 'front'>('back');
+
   const { hasPermission: hasCameraPermission, requestPermission: requestCameraPermission } = useCameraPermission();
-  const backCamera = useCameraDevice('back');
+  const backCamera  = useCameraDevice('back');
+  const frontCamera = useCameraDevice('front');
+  const activeCamera = cameraFacing === 'front' ? frontCamera : backCamera;
 
   const {
     sessionId, students, currentIndex, isRunning,
@@ -437,12 +441,12 @@ export default function AttendanceScreen() {
       </View>
 
       {/* ── Camera view (always-on when enabled) ───────────────────────── */}
-      {cameraEnabled && backCamera && (
+      {cameraEnabled && activeCamera && (
         <View style={styles.cameraContainer}>
           <Camera
             ref={cameraRef}
             style={styles.camera}
-            device={backCamera}
+            device={activeCamera}
             isActive={cameraEnabled}
             onInitialized={startCamera}
             photo={true}
@@ -454,6 +458,12 @@ export default function AttendanceScreen() {
               {faceBoxes.length > 0 ? `${faceBoxes.length} student(s) detected` : 'Point camera at students'}
             </Text>
           </View>
+          <TouchableOpacity
+            style={styles.flipBtn}
+            onPress={() => setCameraFacing(f => f === 'back' ? 'front' : 'back')}
+          >
+            <Ionicons name="camera-reverse-outline" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
       )}
 
@@ -611,6 +621,7 @@ const styles = StyleSheet.create({
   handRaisedText:  { backgroundColor: COLORS.success, color: '#fff', fontWeight: '700', fontSize: 13, paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20 },
   cameraLabel:     { position: 'absolute', bottom: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: 'rgba(0,0,0,0.45)', paddingHorizontal: 12, paddingVertical: 5 },
   cameraLabelText: { color: '#fff', fontSize: 11, fontWeight: '500' },
+  flipBtn:         { position: 'absolute', top: 10, right: 10, backgroundColor: 'rgba(0,0,0,0.45)', borderRadius: 20, padding: 7 },
   // Current student card
   currentCard:     { backgroundColor: COLORS.card, marginHorizontal: 12, marginTop: 10, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: COLORS.primary + '30', elevation: 3 },
   currentIcon:     { width: 38, height: 38, borderRadius: 19, justifyContent: 'center', alignItems: 'center' },
