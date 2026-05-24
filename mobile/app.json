@@ -15,7 +15,9 @@
       "permissions": [
         "RECORD_AUDIO",
         "CAMERA",
-        "INTERNET"
+        "INTERNET",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA"
       ]
     },
     "ios": {
@@ -40,6 +42,14 @@
           "cameraPermissionText": "Allow Smart Teacher to use your camera for attendance detection"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1d02210f-6bbf-4423-8fa9-ed80d47bd573"
+      }
+    }
   }
 }
