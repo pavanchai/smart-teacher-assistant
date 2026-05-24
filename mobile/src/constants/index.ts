@@ -1,5 +1,5 @@
 // Production backend on Railway — replace with your Railway URL after deploying
-export const API_BASE_URL = 'RAILWAY_URL_PLACEHOLDER/api/v1';
+export const API_BASE_URL = 'https://proud-trust-production-53ad.up.railway.app/api/v1';
 
 export const DEMO_EMAIL = 'teacher@demo.com';
 export const DEMO_PASSWORD = 'password123';
