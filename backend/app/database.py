@@ -3,20 +3,16 @@ from sqlalchemy.orm import DeclarativeBase
 
 from app.config import settings
 
-
-def _connect_args(url: str) -> dict:
-    if "localhost" in url or "127.0.0.1" in url:
-        return {}
-    if "railway.internal" in url:
-        return {"ssl": False}
-    return {"ssl": "require"}  # Railway public proxy — SSL without cert verification
-
+# Railway postgres (both internal and public proxy) uses a self-signed cert
+# for CN=localhost, so SSL verification always fails. Disable SSL entirely.
+_is_railway = "railway" in settings.DATABASE_URL
+_connect_args = {"ssl": False} if _is_railway else {}
 
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=False,
     future=True,
-    connect_args=_connect_args(settings.DATABASE_URL),
+    connect_args=_connect_args,
 )
 
 AsyncSessionLocal = async_sessionmaker(
